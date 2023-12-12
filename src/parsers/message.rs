@@ -326,17 +326,14 @@ impl MessageParser {
 
                     let is_html = mime_type == MimeType::TextHtml;
 
-                    if add_to_html && !is_html {
-                        message.html_body.push(message.parts.len());
-                    } else if add_to_text && is_html {
+                    if add_to_text {
                         message.text_body.push(message.parts.len());
                     }
-
-                    if add_to_html && is_html {
+                    if add_to_html {
                         message.html_body.push(message.parts.len());
-                    } else if add_to_text && !is_html {
-                        message.text_body.push(message.parts.len());
-                    } else {
+                    }
+
+                    if !add_to_html && is_html || !add_to_text && !is_html {
                         message.attachments.push(message.parts.len());
                     }
 
